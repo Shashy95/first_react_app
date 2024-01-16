@@ -16,12 +16,12 @@ class OrderPayment extends Model
 
  public function payment(){
     
-        return $this->BelongsTo('App\Models\AccountCodes','account_id');
+        return $this->BelongsTo('App\Models\Payment','paypal_id');
     }
     
      
     public function invoice(){
     
-        return $this->BelongsTo('App\Models\Orders/Order','order_id');
+        return $this->BelongsTo('App\Models\Orders\Order','order_id');
     }
 }

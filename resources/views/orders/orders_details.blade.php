@@ -190,7 +190,7 @@ $settings= App\Models\System::first();
             </div>
 
          
-{{--
+
   @if(!empty($payments[0]))
             <div class="col-12 col-md-12 col-lg-12">
                 <div class="card">
@@ -250,7 +250,7 @@ $settings= App\Models\System::first();
             </div>
             @endif
             
-           --}}
+           
             
         </div>
     </div>

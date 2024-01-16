@@ -188,10 +188,10 @@ else{
                         $random = substr(str_shuffle(str_repeat($x='0123456789', ceil(5/strlen($x)) )),1,5);
                         $receipt['trans_id'] = "SGCP".$random.$pro;
                         $receipt['order_id'] = $sales->id;
+                        $receipt['paypal_id'] = $payment->id;
                       $receipt['amount'] = $sales->due_amount;
                         $receipt['date'] = $sales->invoice_date;
                          $receipt['payment_method'] = 'PayPal';
-                          $receipt['user_id'] = $sales->user_id;
                         $receipt['added_by'] = $sales->user_id;;
                         
                         //update due amount from invoice table

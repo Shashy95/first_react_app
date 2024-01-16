@@ -151,6 +151,11 @@
                           <a class="nav-link {{ (request()->is('orders/orders*')) ? 'active' : ''  }}" href="{{url('orders/orders')}}"><i class="icon-cart"></i> <span>Orders</span></a></li>
                               
                           </li>
+
+                          <li class="nav-item">
+                          <a class="nav-link {{ (request()->is('orders/order_payment*')) ? 'active' : ''  }}" href="{{url('orders/order_payment')}}"><i class="icon-cart"></i> <span>Payments</span></a></li>
+                              
+                          </li>
                           @endcan
 
             </ul>

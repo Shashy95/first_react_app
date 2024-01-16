@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2024 at 07:26 AM
+-- Generation Time: Jan 16, 2024 at 07:51 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -82,6 +82,7 @@ CREATE TABLE `order_items` (
 CREATE TABLE `order_payments` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `order_id` varchar(255) NOT NULL,
+  `paypal_id` int(200) NOT NULL,
   `trans_id` varchar(255) NOT NULL,
   `amount` decimal(38,2) NOT NULL,
   `date` date NOT NULL,
