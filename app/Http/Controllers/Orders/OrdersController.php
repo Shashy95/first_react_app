@@ -121,7 +121,7 @@ try{
 
     //dd($response);
 
-   
+  //pass order id of the table 
 $order_id=Session::put('order_id',$invoice->id);
 
     if($response->isRedirect()){
@@ -162,8 +162,9 @@ else{
           
             if ($response->isSuccessful())
             {
+                //get order id of the table
                 $order_id = Session::get('order_id');
-                //dd(Session::get('order_id'));
+               
 
                 // The customer has successfully paid.
                 $arr_body = $response->getData();

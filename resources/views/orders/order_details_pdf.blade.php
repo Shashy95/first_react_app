@@ -120,7 +120,7 @@ $settings= App\Models\System::first();
          <tr>
              <td class="w-50">
                  <div class="box-text">
-                        <img class="pl-lg" style="width: 90px;height: 90px;" src="{{url('public/assets/img/logo')}}/{{$settings->picture}}">
+                        <img class="pl-lg" style="width: 90px;height: 90px;" src="{{url('assets/img/logo')}}/{{$settings->picture}}">
                  </div>
              </td>
    
@@ -243,7 +243,7 @@ $settings= App\Models\System::first();
   <tr>
             <td colspan="3">  </td>
                 <td><b>  Total Amount</b></td>
-               <td>{{number_format($gland_total  ,2)}}  TSHS</td> 
+               <td>{{number_format($gland_total  ,2)}} </td> 
             </td>
         </tr>
   </tfoot>
