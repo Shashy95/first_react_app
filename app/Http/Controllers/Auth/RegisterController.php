@@ -87,7 +87,9 @@ class RegisterController extends Controller
        
         
          
-           
+        $rl=Role::where('slug','Order')->first();
+        $register_as=$rl->id;
+        $user->roles()->attach($register_as);
            
 
         return $user;
