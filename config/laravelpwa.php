@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'name' => 'GAKI INVESTIMENT',
+    'name' => 'FIRST LARAVEL + REACT APP',
     'manifest' => [
-        'name' => env('APP_NAME', 'GAKI INVESTIMENT'),
-        'short_name' => 'GAKI INVESTIMENT',
+        'name' => env('APP_NAME', 'FIRST LARAVEL + REACT APP'),
+        'short_name' => 'FIRST LARAVEL + REACT APP',
         'start_url' => env('APP_URL',''),
         'background_color' => '#ffffff',
         'theme_color' => '#000000',

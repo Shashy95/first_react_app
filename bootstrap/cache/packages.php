@@ -68,37 +68,15 @@
       'Html' => 'Collective\\Html\\HtmlFacade',
     ),
   ),
-  'livewire/livewire' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Livewire\\LivewireServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Livewire' => 'Livewire\\Livewire',
-    ),
-  ),
-  'maatwebsite/excel' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
-    ),
-  ),
   'munafio/chatify' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Chatify\\ChatifyServiceProvider',
-    ),
     'aliases' => 
     array (
       'Chatify' => 'Chatify\\Facades\\ChatifyMessenger',
+    ),
+    'providers' => 
+    array (
+      0 => 'Chatify\\ChatifyServiceProvider',
     ),
   ),
   'nesbot/carbon' => 
