@@ -1,9 +1,9 @@
+// resources/js/app.js
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client'; // Import createRoot from react-dom/client
+import App from './components/App'; // Your main App component
 
-const App = () => {
-    return <h1>Hello, React!</h1>;
-};
+const container = document.getElementById('app'); // Get the root element
+const root = createRoot(container); // Create a root
 
-const root = createRoot(document.getElementById('app'));
-root.render(<App />);
+root.render(<App />); // Render your App component
