@@ -33,8 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Task routes
     Route::get('/tasks', [TaskController::class, 'index']);
     Route::post('/tasks', [TaskController::class, 'store']);
+    Route::put('/tasks/{id}', [TaskController::class, 'updateStatus']);
 
     // Payment routes
-    Route::post('/verify-payment', [PaymentController::class, 'verifyPayment']);
+    Route::post('/payments', [PaymentController::class, 'store']);
 });
 

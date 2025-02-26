@@ -21,17 +21,38 @@ class TaskController extends Controller
             'title' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
-            'payment_id' => 'required',
         ]);
 
         $task = Task::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'price' => $validated['price'],
-            'status' => 'completed', // Mark as completed after payment
-            'payment_id' => $validated['payment_id'],
+            'user_id' => auth()->id(),
+            //'status' => 'pending', // Mark as completed after payment
+            
         ]);
 
         return response()->json($task, 201);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'status' => 'required|string|in:pending,completed', // Adjust the statuses as needed
+        ]);
+
+        // Find the task by ID
+        $task = Task::findOrFail($id);
+
+        // Update the task's status
+        $task->status = $request->input('status');
+        $task->save(); // Save the changes to the database
+
+        // Return a response
+        return response()->json([
+            'message' => 'Task status updated successfully.',
+            'task' => $task, // Optionally return the updated task
+        ], 200);
     }
 }

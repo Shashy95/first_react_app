@@ -1,42 +1,35 @@
 <?php
+// app/Http/Controllers/PaymentController.php
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
+use App\Models\Payment; // Import the Payment model
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    // Verify PayPal payment
-    public function verifyPayment(Request $request)
+    public function store(Request $request)
     {
-        $paymentId = $request->input('payment_id');
-
-        // Call PayPal API to verify payment
-        // This is a placeholder; you need to implement PayPal API integration
-        $isPaymentValid = $this->verifyPayPalPayment($paymentId);
-
-        if (!$isPaymentValid) {
-            return response()->json(['error' => 'Payment failed'], 400);
-        }
-
-        // Store payment details in the database
-        $payment = Payment::create([
-            'payment_id' => $paymentId,
-            'amount' => $request->input('amount'),
-            'currency' => 'USD',
-            'status' => 'completed',
-            'user_id' => $request->input('user_id'),
-            'task_id' => $request->input('task_id'),
+        // Validate the incoming request
+        $request->validate([
+            'payment_id' => 'required|string',
+            'amount' => 'required|numeric',
+            'currency' => 'required|string',
+            'status' => 'required|string',
+            'user_id' => 'required|exists:users,id',
+            'task_id' => 'required|exists:tasks,id',
         ]);
 
-        return response()->json(['message' => 'Payment successful', 'payment' => $payment]);
-    }
+        // Create a new payment record
+        $payment = Payment::create([
+            'payment_id' => $request->payment_id,
+            'amount' => $request->amount,
+            'currency' => $request->currency,
+            'status' => $request->status,
+            'user_id' => $request->user_id,
+            'task_id' => $request->task_id,
+        ]);
 
-    private function verifyPayPalPayment($paymentId)
-    {
-        // Implement PayPal API logic here
-        // For now, return true for testing
-        return true;
+        return response()->json($payment, 201); // Return the created payment
     }
 }
