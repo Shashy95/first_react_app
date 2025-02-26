@@ -1,43 +1,36 @@
-// src/components/Register.js
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate,Link } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider"; // Import AuthProvider
+import axios from "axios";
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); // Use login function from AuthProvider (optional)
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response=await axios.post('/api/register', {
+      // Call the registration API endpoint
+      const response = await axios.post('/api/register', {
         name,
         email,
         password,
       });
-      // Assuming the API returns user data and token
-      const { user, token } = response.data;
 
-      // Store the token in localStorage or context
-      localStorage.setItem('token', token);
-      localStorage.setItem('user',JSON.stringify(user));
-
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-      // Redirect to home or dashboard
-      navigate('/'); // Redirect to the home page
+      // If registration is successful, log the user in
+        login(response.data.token);// Log the user in after registration
+        navigate("/"); // Redirect to home page on success
+      
     } catch (err) {
-      if (err.response && err.response.data.errors) {
-        // Convert object errors to a string for display
-        const errorMessages = Object.values(err.response.data.errors)
-          .flat()
-          .join(', ');
+      if (err.response?.data?.errors) {
+        const errorMessages = Object.values(err.response.data.errors).flat().join(", ");
         setError(errorMessages);
       } else {
-        setError('Registration failed. Please try again.');
+        setError("Registration failed. Please try again.");
       }
     }
   };
@@ -85,6 +78,12 @@ const Register = () => {
             Register
           </button>
         </form>
+        <p className="mt-4 text-center">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-500 hover:underline">
+            Login Here
+          </Link>
+        </p>
       </div>
     </div>
   );

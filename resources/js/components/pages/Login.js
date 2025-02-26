@@ -1,45 +1,25 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
+import { Link } from 'react-router-dom';
 
-const Login = ({ setIsAuthenticated }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate(); // Hook for navigation
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/login', {
-        email,
-        password,
-      });
-
-      // Extract user and token from response
-      const { user, token } = response.data;
-
-      // Store token and user data
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-
-      // Set Axios default authorization header
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-      // Update authentication state
-      setIsAuthenticated(true);
-
-      // Redirect to home page
-      navigate('/');
+      const response = await axios.post('/api/login', { email, password });
+      const { token, user } = response.data; // Assuming the response contains token and user data
+      login(token, user);
+      navigate("/");
     } catch (err) {
-      if (err.response && err.response.data.errors) {
-        const errorMessages = Object.values(err.response.data.errors)
-          .flat()
-          .join(', ');
-        setError(errorMessages);
-      } else {
-        setError('Login failed. Please check your credentials.');
-      }
+      setError(err.response?.data?.error || "Login failed. Please check your credentials.");
     }
   };
 
@@ -77,8 +57,7 @@ const Login = ({ setIsAuthenticated }) => {
           </button>
         </form>
         <p className="mt-4 text-center">
-          Don't have an account?
-          <Link to="/register" className="text-blue-500 hover:underline"> Register Here</Link>
+          Don't have an account? <Link to="/register" className="text-blue-500 hover:underline">Register Here</Link>
         </p>
       </div>
     </div>
