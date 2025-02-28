@@ -109,7 +109,7 @@ This is a full-stack web application built with **Laravel** as the backend and *
 ### React Frontend
 - React
 - Axios (for API requests)
-- Bootstrap (for styling)
+- Tailwind (for styling)
 - PayPal SDK (for payment integration)
 
 ## Contributing
