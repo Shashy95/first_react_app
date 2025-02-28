@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment; // Import the Payment model
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
+    public function index(Request $request)
+    {
+        // Get the authenticated user
+        $user = $request->query('user_id');
+
+        // Fetch payment history for the authenticated user
+        $payments = Payment::where('user_id', $user)->get();
+
+        // Return the payment history as a JSON response
+        return response()->json($payments);
+    }
+
     public function store(Request $request)
     {
         // Validate the incoming request

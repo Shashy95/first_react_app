@@ -10,7 +10,7 @@ class TaskController extends Controller
     // Get all tasks
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = Task::where('user_id', auth()->id())->get();
         return response()->json($tasks);
     }
 

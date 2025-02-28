@@ -1,16 +1,18 @@
 // src/components/TaskList.js
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import axiosInstance from "../context/axiosInstance";
 import { useAuth } from "../context/AuthProvider";
 import TaskModal from "./TaskModal";
+import DataTable from "react-data-table-component";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
+  const [filterText, setFilterText] = useState(""); // State for search input
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState(null); // State for error handling
   const { isAuthenticated, logout } = useAuth(); // Get user from AuthProvider
+  
 
   // Fetch tasks when the component mounts
   useEffect(() => {
@@ -31,56 +33,85 @@ const TaskList = () => {
     }
   };
 
-  if (!isAuthenticated) {
-    return <p className="text-center text-red-500">Please log in to view tasks.</p>;
-  }
+  const columns = [
+    { name: "Task Title", selector: row => row.title, sortable: true },
+    { name: "Description", selector: row => row.description, sortable: true },
+    { name: "Price (USD)", selector: row => `$${parseFloat(row.price).toFixed(2)}`, sortable: true },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+      sortable: true,
+      cell: (row) => (
+        <span
+          className={`inline-block px-2 py-1 text-xs font-semibold rounded-md ${
+            row.status === "completed" ? " text-green-800" : " text-red-800"
+          }`}
+        >
+          {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
+        </span>
+      ),
+    },
+    {
+      name: "Date",
+      selector: (row) => new Date(row.created_at).toLocaleDateString(),
+      sortable: true,
+    },
+  ];
+
+    // Filter function that searches across all columns
+    const filteredTasks = tasks.filter((task) =>
+      Object.values(task)
+        .join(" ") // Convert object values to a string
+        .toLowerCase()
+        .includes(filterText.toLowerCase())
+    );
+
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Task List</h2>
+  <h1 className="text-2xl font-semibold mb-4">Task List</h1>
+
+  {/* Flex container for search input and button */}
+  <div className="flex flex-wrap justify-between items-center mb-4 space-y-4 sm:space-y-0 sm:flex-row">
+    {/* Add Task Button */}
+    <div className="sm:w-auto w-full">
       <button 
-        className="mb-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
+        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200 w-full sm:w-auto"
         onClick={() => setIsModalOpen(true)}>
         Add Task
       </button>
-      {loading ? (
-        <p className="text-center">Loading tasks...</p>
-      ) : error ? (
-        <p className="text-center text-red-500">{error}</p> // Display error message
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-300">
-            <thead>
-              <tr className="bg-gray-200 text-gray-700">
-                <th className="py-2 px-4 border-b">Task Title</th>
-                <th className="py-2 px-4 border-b">Description</th>
-                <th className="py-2 px-4 border-b">Price (USD)</th>
-                <th className="py-2 px-4 border-b">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tasks.length > 0 ? (
-                tasks.map((task) => (
-                  <tr key={task.id} className="hover:bg-gray-100">
-                    <td className="py-2 px-4 border-b">{task.title}</td>
-                    <td className="py-2 px-4 border-b">{task.description}</td>
-                    <td className="py-2 px-4 border-b">${parseFloat(task.price).toFixed(2)}</td>
-                    <td className="py-2 px-4 border-b">{task.status}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4" className="py-2 px-4 text-center">
-                    No tasks available
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
-      <TaskModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} refreshTasks={fetchTasks} />
     </div>
+
+    {/* Search Input */}
+    <div className="sm:w-64 w-full">
+      <input
+        type="text"
+        placeholder="Search..."
+        value={filterText}
+        onChange={(e) => setFilterText(e.target.value)}
+        className="p-2 border rounded-md shadow-sm w-full"
+      />
+    </div>
+  </div>
+
+  {/* Task Table */}
+  <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+    <DataTable
+      columns={columns}
+      data={filteredTasks} // Use filtered data
+      pagination
+      highlightOnHover
+      responsive
+      striped
+      subHeader={true}
+      persistTableHead
+    />
+  </div>
+
+  {/* Task Modal */}
+  <TaskModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} refreshTasks={fetchTasks} />
+</div>
+
   );
 };
 

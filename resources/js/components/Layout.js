@@ -11,6 +11,7 @@ const Layout = ({ children, isAuthenticated, onLogout }) => {
             {isAuthenticated ? (
               <>
                 <Link to="/" className="hover:underline">Home</Link>
+                <Link to="/payments" className="hover:underline">Payment History</Link>
                 <button onClick={onLogout} className="hover:underline">
                   Logout
                 </button>

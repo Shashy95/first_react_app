@@ -29,7 +29,10 @@
   "dependencies": {
     "@paypal/react-paypal-js": "^8.8.2",
     "axios": "^1.7.9",
-    "react-router-dom": "^7.1.5"
+    "react-data-table-component": "^7.7.0",
+    "react-router-dom": "^7.1.5",
+    "react-toastify": "^11.0.5",
+    "styled-components": "^5.3.11"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.9",

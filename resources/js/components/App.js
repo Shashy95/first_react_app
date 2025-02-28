@@ -5,13 +5,17 @@ import Layout from "./Layout";
 import TaskList from "./pages/Task";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import PaymentHistory from "./pages/PaymentHistory";
 import { AuthProvider, useAuth } from "./context/AuthProvider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <AuthProvider>
       <Router>
         <Main />
+        <ToastContainer />
       </Router>
     </AuthProvider>
   );
@@ -26,9 +30,10 @@ const Main = () => {
         {/* If authenticated, show TaskList and redirect to it */}
         {isAuthenticated ? (
           <>
-            <Route path="/" element={<TaskList />} />
+            <Route path="/" element={<TaskList />} />         
             <Route path="/login" element={<Navigate to="/" replace />} />
             <Route path="/register" element={<Navigate to="/" replace />} />
+            <Route path="/payments" element={<PaymentHistory />} />
           </>
         ) : (
           // If not authenticated, show Login and Register

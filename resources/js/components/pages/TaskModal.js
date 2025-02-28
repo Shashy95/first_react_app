@@ -3,13 +3,14 @@ import React, { useState, useContext } from "react";
 import axiosInstance from "../context/axiosInstance";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useAuth } from "../context/AuthProvider"; // Import your Auth context
+import { toast } from "react-toastify"; // Import the toast function
+import "react-toastify/dist/ReactToastify.css";
 
 const TaskModal = ({ isOpen, onClose, refreshTasks }) => {
   const { user } = useAuth(); // Get the user from context
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskPrice, setTaskPrice] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   if (!isOpen) return null;
@@ -24,6 +25,7 @@ const TaskModal = ({ isOpen, onClose, refreshTasks }) => {
       return taskResponse.data.id; // Return the task ID
     } catch (err) {
       setError("Failed to create task. Please try again.");
+      toast.error("Task creation failed. Please try again.");
       console.error("Error:", err);
       throw err; // Rethrow the error for handling in the PayPal button
     }
@@ -39,7 +41,9 @@ const TaskModal = ({ isOpen, onClose, refreshTasks }) => {
         user_id: userId, // Use the actual user ID
         task_id: taskId,
       });
+      toast.success("Payment successful! Task created!");
     } catch (err) {
+      toast.error("Failed to save payment. Please try again.");
       console.error("Error saving payment:", err);
     }
   };

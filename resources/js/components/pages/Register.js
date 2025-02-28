@@ -21,9 +21,9 @@ const Register = () => {
         password,
       });
 
-      // If registration is successful, log the user in
-        login(response.data.token);// Log the user in after registration
-        navigate("/"); // Redirect to home page on success
+      const { token, user } = response.data; 
+      login(token, user);// Log the user in after registration
+      navigate("/"); // Redirect to home page on success
       
     } catch (err) {
       if (err.response?.data?.errors) {
